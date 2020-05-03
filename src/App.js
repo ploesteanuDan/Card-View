@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import Card1 from "./components/card1";
+import Card2 from "./components/card2";
+import { Transition, animated } from "react-spring/renderprops";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+class App extends Component {
+  state = {
+    showCard2: false,
+  };
+  toggle = (e) => this.setState({ showCard2: !this.state.showCard2 });
+  render() {
+    return (
+      <div className="App">
+        <button className="nextBtn" onClick={this.toggle}>
+          Next Card
+        </button>
+        <Card1 toggle={this.toggle} />
+
+        <Transition
+          native
+          items={this.state.showCard2}
+          from={{ transform: "translate(2000px, -2000px)" }}
+          enter={{ transform: "translate(0px, 0px)" }}
+          leave={{ transform: "translate(2000px, -2000px)" }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          {(show) =>
+            show &&
+            ((props) => (
+              <animated.div style={props}>
+                <Card2 />
+              </animated.div>
+            ))
+          }
+        </Transition>
+      </div>
+    );
+  }
 }
 
 export default App;
