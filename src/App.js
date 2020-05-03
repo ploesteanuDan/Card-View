@@ -6,29 +6,33 @@ import "./App.css";
 
 class App extends Component {
   state = {
-    showCard2: false,
+    counter: 0,
   };
-  toggle = (e) => this.setState({ showCard2: !this.state.showCard2 });
+  toggle = (e) =>
+    this.setState({
+      counter: this.state.counter + 1,
+    });
   render() {
+    console.log(this.state.counter);
     return (
       <div className="App">
         <button className="nextBtn" onClick={this.toggle}>
           Next Card
         </button>
-        <Card1 toggle={this.toggle} />
 
         <Transition
+          className="transCard2"
           native
-          items={this.state.showCard2}
-          from={{ transform: "translate(2000px, -2000px)" }}
+          items={this.state.counter}
+          from={{ transform: "translate(-2000px, -1000px)" }}
           enter={{ transform: "translate(0px, 0px)" }}
-          leave={{ transform: "translate(2000px, -2000px)" }}
+          leave={{ transform: "translate(2000px, -100px)" }}
         >
           {(show) =>
             show &&
             ((props) => (
               <animated.div style={props}>
-                <Card2 />
+                {this.props.data[this.state.counter]}
               </animated.div>
             ))
           }
